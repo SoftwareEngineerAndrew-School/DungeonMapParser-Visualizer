@@ -7,18 +7,17 @@ roomInitialsDict={
   "blood":"B",
   "trap":"T",
   "rare":"R"
-
-
   }
+
 roomColorDict={
-  "N":"DEFINITION",
-  "P":"BUILTIN",
-  "F":"hit",
-  "E":"STRING",
-  "M":"KEYWORD",
-  "B":"COMMENT",
-  "T":"stderr",
-  "R":"console",
+  "N":[107, 58, 17],
+  "P":[117, 0, 133], 
+  "F":[224, 0, 255],
+  "E":[20, 133, 0],
+  "M":[254, 223, 0],
+  "B":[255, 0, 0],
+  "T":[216, 127, 51],
+  "R":[107, 58, 17],
 
   }
 vertDoorInitialDict={

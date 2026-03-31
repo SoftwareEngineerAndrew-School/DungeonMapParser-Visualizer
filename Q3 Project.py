@@ -1,4 +1,4 @@
-import sys
+from colored import Fore, Back, Style
 import math
 import roomsData
 import mapRenderingDicts
@@ -7,7 +7,6 @@ roomInitialsDict=mapRenderingDicts.roomInitialsDict
 roomColorDict=mapRenderingDicts.roomColorDict
 vertDoorInitialDict=mapRenderingDicts.vertDoorInitialDict
 horizontalDoorInitialDict=mapRenderingDicts.horizontalDoorInitialDict
-color = sys.stdout.shell
 MAPWIDTH=6
 MAPHEIGHT=6
 def split_string_by_n(s, n):
@@ -120,6 +119,13 @@ def findAjacentRoomsV(currentMap,doorIDV):
   room1=inputRoomLIST[doorIDV]
   room2=inputRoomLIST[doorIDV+6]
   return([room1],[room2])
+
+def outputColorPrinter(roomInitial):
+  #takes room initial (eg. "N" or "P") and prints the correct color and that initial
+  color=roomColorDict[roomInitial]
+  print(f'{Fore.rgb(color[0],color[1],color[2])}{roomInitial}{Style.reset}',end="")
+def doorPrinter(door):
+  print(f'{Fore.rgb(107, 58, 17)}{door}{Style.reset}',end="")
 def printMap(currentMap):
   inputLIST=currentMap.split(";")
   inputRoomLIST=inputLIST[2]
@@ -128,7 +134,6 @@ def printMap(currentMap):
   inputDoorLIST=split_string_by_n(inputDoorLIST,1)
   outputMapList=[]
   for i in range(len(inputRoomLIST)):
-    print(inputRoomLIST[i])
     outputMapList+=findRoomType(int(inputRoomLIST[i]))
     if i%6==5:
       continue
@@ -155,22 +160,23 @@ def printMap(currentMap):
   for i in range(len(inputDoorLIST)):
     outputDoorList+=[findDoorType(int(inputDoorLIST[i]))]
   for i in range(MAPHEIGHT):
-    _=color.write(outputMapList[i*6],roomColorDict[outputMapList[i*6]])
+    outputColorPrinter(outputMapList[i*6])
     for j in range(1,MAPWIDTH):
       doorCoord=((i*(MAPWIDTH-1))+j-1)
       if horizontalRoomJoiners[doorCoord]:
-        _=color.write(roomInitialsDict[findDoorType(0)],roomColorDict[roomInitialsDict[findDoorType(0)]])
+        outputColorPrinter(roomInitialsDict[findDoorType(0)])         
       else:
-        _=color.write(horizontalDoorInitialDict[outputDoorList[i*11+j-1]],roomColorDict[outputMapList[i*6+j]])
-      _=color.write(outputMapList[i*6+j],roomColorDict[outputMapList[i*6+j]])
+        doorPrinter(horizontalDoorInitialDict[outputDoorList[i*11+j-1]])
+      outputColorPrinter(outputMapList[i*6+j])
     #room printer
     print("")
     if i!=MAPHEIGHT-1:
       for j in range(MAPWIDTH):
         if vertRoomJoiners[i*6+j]:
-          _=color.write(roomInitialsDict[findDoorType(0)],roomColorDict[roomInitialsDict[findDoorType(0)]])    
+          outputColorPrinter(roomInitialsDict[findDoorType(0)])
         else:
-          _=color.write(vertDoorInitialDict[outputDoorList[i*11+j+5]],roomColorDict[outputMapList[i*6+j]])
+          doorPrinter(vertDoorInitialDict[outputDoorList[i*11+j+5]])
+
         print(" ",end="")
     #door printer
     print("")
@@ -275,7 +281,7 @@ mapSet=["F7;1685168228903;015010018000075075082103035000024075082103103000066097
 #  printMap(i)
 printMap("F7;1704301189361;026097096005088088068018103043088088112112103103102015014014014134134077065039044130134077066066066066012077;009190901999099999911999992099199990900909999990990903999999")                                                                                                                                                                                                
 
-    """
+"""
     F7;1704301189361;02609709600508
     8088068018103043088088112112103
     1031020150140140141341340770650
@@ -283,9 +289,8 @@ printMap("F7;1704301189361;02609709600508808806801810304308808811211210310310201
     7;00919090199909999991199999209
     9199990900909999990990903999999
 
-    """
+"""
 #actually runs the program
 tempList=createLinkedLists("F7;1704301189361;026097096005088088068018103043088088112112103103102015014014014134134077065039044130134077066066066066012077;009190901999099999911999992099199990900909999990990903999999")                                                                                                                                                                                                
 tree=restructureTree(tempList[0],tempList[1])
-print(tree)
 printTree(tree)
