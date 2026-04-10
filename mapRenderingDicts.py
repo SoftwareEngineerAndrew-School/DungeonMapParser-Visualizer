@@ -8,7 +8,6 @@ roomInitialsDict={
   "trap":"T",
   "rare":"R"
   }
-
 roomColorDict={
   "N":[107, 58, 17],
   "P":[117, 0, 133], 
@@ -17,8 +16,7 @@ roomColorDict={
   "M":[254, 223, 0],
   "B":[255, 0, 0],
   "T":[216, 127, 51],
-  "R":[107, 58, 17],
-
+  "R":[107, 58, 17]
   }
 vertDoorInitialDict={
   "normal":"|",
