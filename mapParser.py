@@ -3,6 +3,7 @@ import math
 import roomsData
 import mapRenderingDicts
 import mapSet 
+import random
 rooms=roomsData.rooms
 roomInitialsDict=mapRenderingDicts.roomInitialsDict
 roomColorDict=mapRenderingDicts.roomColorDict
@@ -194,6 +195,32 @@ def printTree(tree, indent=0):
   print(f"{prefix}{nodeId}")
   for child in children:
     printTree(child, indent + 1)
+#!!!!!!!!
+def removeRandomLeaf(tree):
+    leaves = []
+    def collectLeaves(currentNode):
+        children = currentNode[1]
+        #loop through indices using  range and len
+        for i in range(len(children)):
+            child = children[i]
+            childChildren = child[1]
+            if len(childChildren) == 0:
+                #store the parent list and index for deletion
+                leaves.append([children, i])
+            else:
+                collectLeaves(child)
+    collectLeaves(tree)
+    if len(leaves) == 0:
+        return tree
+    #select a random item index from the leaves list
+    randomIndex = random.randint(0, len(leaves) - 1)
+    target = leaves[randomIndex]
+    
+    parentChildrenList = target[0]
+    leafIndex = target[1]    
+    del parentChildrenList[leafIndex]   
+    return tree
+
 for i in mapSet:
   printMap(i)
   print(printTree(restructureTree(createLinkedLists(i)[0],createLinkedLists(i)[1])))
@@ -201,4 +228,6 @@ printMap("F7;1704301189361;02609709600508808806801810304308808811211210310310201
 #actually runs the program
 tempList=createLinkedLists("F7;1704301189361;026097096005088088068018103043088088112112103103102015014014014134134077065039044130134077066066066066012077;009190901999099999911999992099199990900909999990990903999999")                                                                                                                                                                                                
 tree=restructureTree(tempList[0],tempList[1])
+print(tree)
 printTree(tree)
+printTree(removeRandomLeaf(tree))
